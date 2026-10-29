@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ocean Charter Communities</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%233a76b5'/><text x='50' y='54' font-size='70' text-anchor='middle' dominant-baseline='middle'>🏫</text></svg>">
+<title>Parent-led Ocean Charter Communities</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231e4d6b'/><text x='50' y='54' font-size='70' text-anchor='middle' dominant-baseline='middle'>🏫</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f4e8cc;
-    --panel: #fffaf0;
-    --gold: #fbdd9e;
-    --gold-dark: #e3c27a;
-    --gold-deep: #c99a3a;
-    --blue: #3a76b5;
-    --blue-dark: #2a5a8c;
+    --paper: #f3e6d8;
+    --panel: #fffaf5;
+    --gold: #f7cfa8;
+    --gold-dark: #e0a97c;
+    --gold-deep: #c27a4a;
+    --blue: #1e4d6b;
+    --blue-dark: #133650;
     --ink: #33302a;
     --muted: #7a7264;
-    --line: #e6d4a8;
-    --card: #fff6e2;
+    --line: #ebd0b8;
+    --card: #fdf1e6;
   }
   * { box-sizing: border-box; }
   body {
@@ -27,7 +27,7 @@
     background: var(--paper);
     background-image:
       radial-gradient(circle at 15% 10%, rgba(255,255,255,.55), transparent 40%),
-      radial-gradient(circle at 85% 30%, rgba(230,200,140,.35), transparent 45%),
+      radial-gradient(circle at 85% 30%, rgba(235,190,150,.35), transparent 45%),
       radial-gradient(circle at 40% 90%, rgba(255,255,255,.4), transparent 40%);
     color: var(--ink);
     font: 14px/1.6 Montserrat, Arial, sans-serif;
@@ -44,16 +44,7 @@
   }
 
   /* Header */
-  .masthead { padding: 22px 28px 16px; display: flex; align-items: center; gap: 16px; }
-  .mark {
-    flex: none;
-    background: var(--blue);
-    border: 1px solid var(--blue-dark);
-    border-radius: 6px;
-    padding: 6px 10px;
-    line-height: 0;
-  }
-  .mark img { width: 104px; height: auto; }
+  .masthead { padding: 22px 28px 16px; }
   .masthead h1 { margin: 0; color: var(--blue); font-size: 24px; font-weight: 700; letter-spacing: .2px; }
   .masthead p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
 
@@ -69,7 +60,7 @@
     color: var(--ink); text-decoration: none;
     padding: 9px 12px; font-size: 13px; font-weight: 600;
   }
-  .navbar a:hover { background: #f8cf7c; }
+  .navbar a:hover { background: #f3bb8c; }
   .navbar a.on { background: var(--panel); border-left: 1px solid var(--gold-dark); border-right: 1px solid var(--gold-dark); margin-bottom: -1px; }
   .navbar .spacer { flex: 1; }
   .navbar .start-link { color: var(--blue-dark); }
@@ -141,17 +132,31 @@
     padding: 5px 14px;
     font: 600 13px Montserrat, Arial, sans-serif;
     color: #fff; text-decoration: none;
-    background: linear-gradient(#4a86c5, var(--blue));
+    background: linear-gradient(#2c6488, var(--blue));
     border: 1px solid var(--blue-dark);
     border-radius: 4px;
   }
   .btn:hover { background: var(--blue-dark); color: #fff; }
   .btn:disabled { opacity: .5; cursor: default; }
-  .btn.gold { color: var(--ink); background: linear-gradient(#fde4ad, var(--gold)); border-color: var(--gold-deep); }
-  .btn.gold:hover:not(:disabled) { background: #f8cf7c; color: var(--ink); }
+  .btn.gold { color: var(--ink); background: linear-gradient(#fbe0c6, var(--gold)); border-color: var(--gold-deep); }
+  .btn.gold:hover:not(:disabled) { background: #f3bb8c; color: var(--ink); }
   .linkcheck { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
   .linkcheck .hint { color: var(--muted); font-size: 12px; }
   .form .check:has(input:disabled) { color: var(--muted); }
+
+  /* Popup before joining a group */
+  .joinbox {
+    max-width: 420px; width: calc(100% - 32px); padding: 0;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid var(--gold-dark); border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(60,40,10,.25);
+  }
+  .joinbox::backdrop { background: rgba(50,40,20,.45); }
+  .joinbox h3 { margin: 0; padding: 10px 16px; background: var(--gold); border-bottom: 1px solid var(--gold-dark); font-size: 15px; color: var(--ink); }
+  .joinbox .jb-body { padding: 14px 16px 4px; }
+  .joinbox .jb-body p { margin: 0 0 10px; }
+  .joinbox .jb-actions { display: flex; gap: 12px; align-items: center; justify-content: flex-end; padding: 6px 16px 16px; }
+  .joinbox .jb-cancel { background: none; border: 0; padding: 0; font: inherit; color: var(--blue); text-decoration: underline; cursor: pointer; }
 
   .empty { padding: 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); }
 
@@ -189,20 +194,20 @@
   @media (max-width: 700px) {
     .wrap { margin: 0; border: 0; }
 
-    /* Phone header: centered logo and title, menu as a 2 x 2 grid of buttons */
-    .masthead { flex-direction: column; text-align: center; gap: 0; padding: 14px 16px 10px; }
-    .mark { padding: 4px 8px; }
-    .mark img { width: 76px; }
-    .masthead h1 { font-size: 20px; line-height: 1.2; margin-top: 8px; }
+    /* Phone header: centered title, menu as a 2 x 2 grid of buttons */
+    .masthead { text-align: center; padding: 14px 16px 10px; }
+    .masthead h1 { font-size: 20px; line-height: 1.2; }
     .masthead p { font-size: 12px; margin-top: 3px; }
     .long { display: none; }
     .short { display: inline; }
     .notice { padding-left: 16px; padding-right: 16px; }
+    footer { display: block; }
+    footer .foot-link { display: block; margin-top: 6px; }
     .navbar { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px 16px 10px; }
     .navbar .spacer { display: none; }
     .navbar a, .navbar a.on {
       text-align: center; padding: 7px 4px; margin: 0;
-      background: #fdecc4; border: 1px solid var(--gold-dark); border-radius: 4px;
+      background: #fbe4cf; border: 1px solid var(--gold-dark); border-radius: 4px;
     }
     .navbar a.on { background: var(--panel); }
     .navbar .start-link, .navbar .start-link.on { color: #fff; background: var(--blue); border-color: var(--blue-dark); }
@@ -221,11 +226,8 @@
 <div class="wrap">
 
   <div class="masthead">
-    <div class="mark"><img src="images/ocs-logo-white.png" alt="Ocean Charter School"></div>
-    <div>
-      <h1>Ocean Charter Communities</h1>
-      <p><span class="long">Find your people. Parent-run groups for Ocean Charter School families.</span><span class="short">Parent-run groups for OCS families</span></p>
-    </div>
+    <h1>Parent-led Ocean Charter Communities</h1>
+    <p><span class="long">Find your people. Parent-led groups for Ocean Charter families.</span><span class="short">Parent-led groups for OCS families</span></p>
   </div>
 
   <nav class="navbar">
@@ -235,7 +237,7 @@
     <span class="spacer"></span>
     <a href="#start" data-nav="start" class="start-link">+ Start a group</a>
   </nav>
-  <p class="notice">A parent-run directory. Not an official Ocean Charter School website.</p>
+  <p class="notice">These groups are not sponsored or controlled in any way by OCS. They do not meet on campus. They are a parent-led effort and are open to anyone who is interested.</p>
 
   <!-- Browse -->
   <section id="view-browse" class="cols">
@@ -294,7 +296,7 @@
         <input id="f-email" type="email" placeholder="you@example.com">
         <div class="err" data-for="f-email">Please add a valid email.</div>
 
-        <label class="check"><input id="f-ok" type="checkbox"> I'm part of the Ocean Charter community, and I'll let people in through my group's own app.</label>
+        <label class="check"><input id="f-ok" type="checkbox"> My group is open to anyone in the OCS community who's interested.</label>
         <div class="err" data-for="f-ok">Please check this box.</div>
 
         <!-- Spam trap: hidden from people, bots fill it in. -->
@@ -351,11 +353,12 @@
   <section id="view-about" class="cols page" hidden>
     <div class="main">
       <h2>How it works</h2>
-      <p>This is a simple directory of parent-run groups at Ocean Charter School. Families use it to find each other: by interest, language, or shared experience.</p>
+      <p>This is a simple directory of parent-led groups for the Ocean Charter community. Families use it to find each other: by interest, language, or shared experience.</p>
+      <p><strong>These groups are not sponsored or controlled in any way by OCS. They do not meet on campus. They are a parent-led effort and are open to anyone who is interested.</strong></p>
       <h3>Joining a group</h3>
-      <p>Click <strong>Join</strong>. You'll go to the group's WhatsApp, Facebook, or other page. The person who started the group lets new members in from there.</p>
+      <p>Click <strong>Join</strong>. You'll go to the group's WhatsApp, Facebook, or other page. Every group is open to anyone who's interested.</p>
       <h3>Starting a group</h3>
-      <p>Create your group in the app you like, then <a href="#start">add it here</a>. It shows up right away. Your email stays private. It's only used if we need to reach you about your group.</p>
+      <p>Create your group in the app you like, then <a href="#start">add it here</a>. Your group must be open to anyone who's interested. It shows up right away. Your email stays private. It's only used if we need to reach you about your group.</p>
       <h3>Broken link?</h3>
       <p>Click <strong>Report broken link</strong> under the group, or use <a href="#report">Report a problem</a> in the menu for anything else.</p>
       <h3>Change or remove a group</h3>
@@ -363,9 +366,21 @@
     </div>
   </section>
 
+  <dialog id="joinbox" class="joinbox">
+    <h3>Before you join <span id="jb-name"></span></h3>
+    <div class="jb-body">
+      <p>Everyone in the OCS community is welcome: parents, guardians, staff, teachers and administration.</p>
+      <p>These affinity groups aim to create safe spaces and to celebrate the many cultures and experiences that make up our OCS community.</p>
+    </div>
+    <div class="jb-actions">
+      <button type="button" id="jb-cancel" class="jb-cancel">Cancel</button>
+      <a id="jb-go" class="btn" target="_blank" rel="noopener noreferrer">Continue to group &rarr;</a>
+    </div>
+  </dialog>
+
   <footer>
-    <span>Ocean Charter Communities: run by OCS parents.</span>
-    <span><a href="#about" style="color:inherit">How it works</a></span>
+    <span>These groups are not sponsored or controlled in any way by OCS. They do not meet on campus. They are a parent-led effort and are open to anyone who is interested.</span>
+    <span class="foot-link"><a href="#about" style="color:inherit">How it works</a></span>
   </footer>
 </div>
 
@@ -410,10 +425,35 @@ async function loadGroups() {
 }
 const $ = s => document.querySelector(s);
 
+// App names for the Join button, matched by the link's web address.
+// Messenger comes before Facebook so m.me / messenger.com links get the right name.
+const PLATFORMS = [
+  ["WhatsApp", ["whatsapp.com", "wa.me"]],
+  ["Messenger", ["m.me", "messenger.com"]],
+  ["Facebook", ["facebook.com", "fb.com"]],
+  ["Signal", ["signal.group", "signal.me"]],
+  ["Telegram", ["t.me", "telegram.me", "telegram.org"]],
+  ["GroupMe", ["groupme.com"]],
+  ["Discord", ["discord.gg", "discord.com"]],
+  ["Google Groups", ["groups.google.com"]],
+  ["Instagram", ["instagram.com", "instagr.am"]],
+  ["Slack", ["slack.com"]],
+  ["BAND", ["band.us"]],
+  ["Meetup", ["meetup.com"]],
+  ["Nextdoor", ["nextdoor.com"]],
+  ["Konstella", ["konstella.com"]],
+  ["Heylo", ["heylo.com"]],
+  ["Spond", ["spond.com"]],
+  ["Microsoft Teams", ["teams.microsoft.com", "teams.live.com"]],
+  ["Eventbrite", ["eventbrite.com"]]
+];
+
+// Returns the app's name, or "" when the link isn't one we know.
 function platform(link) {
-  if (/whatsapp\.com|wa\.me/.test(link)) return "WhatsApp";
-  if (/facebook\.com|fb\.com/.test(link)) return "Facebook";
-  return "website";
+  let host;
+  try { host = new URL(link).hostname.toLowerCase(); } catch (err) { return ""; }
+  const hit = PLATFORMS.find(([, hosts]) => hosts.some(h => host === h || host.endsWith("." + h)));
+  return hit ? hit[0] : "";
 }
 
 function renderCats() {
@@ -467,7 +507,7 @@ function renderList() {
       <div class="meta"><span class="tag"></span><span class="who"></span></div>
       <p></p>
       <div class="row">
-        <a class="btn" target="_blank" rel="noopener noreferrer">Join on ${platform(g.link)} &rarr;</a>
+        <a class="btn" target="_blank" rel="noopener noreferrer">${platform(g.link) ? "Join on " + platform(g.link) : "Join now"} &rarr;</a>
         <a class="report" href="#">Report broken link</a>
       </div>`;
     div.querySelector("h4").textContent = g.name;
@@ -475,6 +515,10 @@ function renderList() {
     div.querySelector(".who").textContent = " Started by " + g.who;
     div.querySelector("p").textContent = g.desc;
     if (/^https:\/\//.test(g.link)) div.querySelector(".btn").href = g.link;
+    div.querySelector(".btn").onclick = e => {
+      e.preventDefault();
+      openJoinBox(g);
+    };
     div.querySelector(".report").onclick = e => {
       e.preventDefault();
       const note = Object.assign(document.createElement("span"), { className: "flash", textContent: "Thanks. We'll check this link." });
@@ -483,6 +527,15 @@ function renderList() {
     };
     list.appendChild(div);
   });
+}
+
+// Shows the welcome note first; the real join link is the popup's Continue button.
+function openJoinBox(g) {
+  $("#jb-name").textContent = g.name;
+  const go = $("#jb-go");
+  if (/^https:\/\//.test(g.link)) go.href = g.link; else go.removeAttribute("href");
+  go.innerHTML = "Continue to " + (platform(g.link) || "group") + " &rarr;";
+  $("#joinbox").showModal();
 }
 
 const VIEWS = ["browse", "start", "report", "about"];
@@ -565,7 +618,7 @@ function resetLinkCheck() {
   $("#f-linkok").checked = false;
   $("#f-linkok").disabled = true;
   $("#f-kind").textContent = ok
-    ? "This looks like a " + platform(v) + " link. Click to make sure it opens your group."
+    ? (platform(v) ? "This looks like a " + platform(v) + " link. " : "") + "Click to make sure it opens your group."
     : "Paste your link, then test it.";
 }
 $("#f-link").addEventListener("input", resetLinkCheck);
@@ -635,6 +688,10 @@ $("#form").addEventListener("submit", async e => {
   okBox.innerHTML = "<strong>Your group is live.</strong> It's at the top of the list. Thanks for building community!";
   $("#list").prepend(okBox);
 });
+
+$("#jb-cancel").addEventListener("click", () => $("#joinbox").close());
+$("#jb-go").addEventListener("click", () => $("#joinbox").close());
+$("#joinbox").addEventListener("click", e => { if (e.target.id === "joinbox") e.target.close(); });
 
 $("#q").addEventListener("input", renderList);
 window.addEventListener("hashchange", route);
