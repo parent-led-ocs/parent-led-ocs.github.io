@@ -156,7 +156,7 @@
   .joinbox h3 { margin: 0; padding: 10px 16px; background: var(--gold); border-bottom: 1px solid var(--gold-dark); font-size: 15px; color: var(--ink); }
   .joinbox .jb-body { padding: 14px 16px 4px; }
   .joinbox .jb-body p { margin: 0 0 10px; }
-  .joinbox .jb-actions { display: flex; gap: 12px; align-items: center; justify-content: flex-end; padding: 6px 16px 16px; }
+  .joinbox .jb-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-end; padding: 6px 16px 16px; }
   .joinbox .jb-cancel { background: none; border: 0; padding: 0; font: inherit; color: var(--blue); text-decoration: underline; cursor: pointer; }
 
   .empty { padding: 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); }
@@ -383,6 +383,19 @@
     </div>
   </dialog>
 
+  <dialog id="reportbox" class="joinbox">
+    <h3>Is this link broken?</h3>
+    <div class="jb-body">
+      <p>Please try the link first. If it opens <strong id="rb-name"></strong>, it's working and there's nothing to report.</p>
+      <p>If it really is broken, we'll let the person who started the group know.</p>
+    </div>
+    <div class="jb-actions">
+      <button type="button" id="rb-cancel" class="jb-cancel">Cancel</button>
+      <a id="rb-try" class="btn gold" target="_blank" rel="noopener noreferrer">Try the link &#8599;</a>
+      <button type="button" id="rb-confirm" class="btn">Yes, it's broken</button>
+    </div>
+  </dialog>
+
   <footer>
     <span>These groups are not sponsored or controlled in any way by OCS. They do not meet on campus. They are a parent-led effort and are open to anyone who is interested.</span>
     <span class="foot-link"><a href="#about" style="color:inherit">How it works</a></span>
@@ -526,9 +539,7 @@ function renderList() {
     };
     div.querySelector(".report").onclick = e => {
       e.preventDefault();
-      const note = Object.assign(document.createElement("span"), { className: "flash", textContent: "Thanks. We'll check this link." });
-      e.target.replaceWith(note);
-      post({ action: "report", id: g.id, reason: "Broken link" }).catch(() => {});
+      openReportBox(g, e.target);
     };
     list.appendChild(div);
   });
@@ -541,6 +552,16 @@ function openJoinBox(g) {
   if (/^https:\/\//.test(g.link)) go.href = g.link; else go.removeAttribute("href");
   go.innerHTML = "Continue to " + (platform(g.link) || "group") + " &rarr;";
   $("#joinbox").showModal();
+}
+
+// Asks "is it really broken?" before sending a broken-link report.
+let reporting = null;
+function openReportBox(g, linkEl) {
+  reporting = { g, linkEl };
+  $("#rb-name").textContent = g.name;
+  const tryLink = $("#rb-try");
+  if (/^https:\/\//.test(g.link)) tryLink.href = g.link; else tryLink.removeAttribute("href");
+  $("#reportbox").showModal();
 }
 
 const VIEWS = ["browse", "start", "report", "about"];
@@ -697,6 +718,16 @@ $("#form").addEventListener("submit", async e => {
 $("#jb-cancel").addEventListener("click", () => $("#joinbox").close());
 $("#jb-go").addEventListener("click", () => $("#joinbox").close());
 $("#joinbox").addEventListener("click", e => { if (e.target.id === "joinbox") e.target.close(); });
+
+$("#rb-cancel").addEventListener("click", () => $("#reportbox").close());
+$("#reportbox").addEventListener("click", e => { if (e.target.id === "reportbox") e.target.close(); });
+$("#rb-confirm").addEventListener("click", () => {
+  const { g, linkEl } = reporting;
+  $("#reportbox").close();
+  const note = Object.assign(document.createElement("span"), { className: "flash", textContent: "Thanks. We'll check this link and let the group's starter know." });
+  linkEl.replaceWith(note);
+  post({ action: "report", id: g.id, reason: "Broken link" }).catch(() => {});
+});
 
 $("#q").addEventListener("input", renderList);
 window.addEventListener("hashchange", route);

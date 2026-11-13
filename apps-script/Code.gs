@@ -115,12 +115,16 @@ function addReport(d) {
   SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Reports")
     .appendRow([new Date(), id, safe(name), safe(link), reason, safe(note), safe(replyEmail)]);
 
+  // A broken link is something only the group's starter can fix, so they get a note too.
+  const starterNotified = row && reason === "Broken link" && notifyStarter(row);
+
   notify("Report: " + reason + (row ? " - " + name : ""),
     "Someone sent a report.\n\n" +
     "What's wrong: " + reason + "\n" +
     (note ? "Details: " + note + "\n" : "") +
     (replyEmail ? "They'd like a reply: " + replyEmail + " (just hit Reply)\n" : "No reply requested.\n") +
     (row ? "\nGroup: " + name + "\n" + link + "\nStarted by " + row[6] + " (" + row[7] + ")\n" : "\nNot about a specific group.\n") +
+    (starterNotified ? "We also emailed " + row[6] + " to check the link.\n" : "") +
     "\n" + SpreadsheetApp.getActiveSpreadsheet().getUrl(),
     replyEmail);
 
@@ -135,6 +139,25 @@ function notify(subject, body, replyTo) {
       replyTo ? { replyTo: replyTo } : {});
   } catch (err) {
     // A failed notice should never block a parent from adding a group.
+  }
+}
+
+// Tells a group's starter their join link was reported as broken.
+// Replies come back to the sheet's owner, who can update the link.
+function notifyStarter(row) {
+  const email = String(row[7]);
+  if (!/^\S+@\S+\.\S+$/.test(email)) return false;
+  try {
+    MailApp.sendEmail(email, "Is your group's link working? (" + row[2] + ")",
+      "Hi " + row[6] + ",\n\n" +
+      "Someone on Parent-led Ocean Charter Communities reported that the join link for your group \"" + row[2] + "\" may not be working:\n" +
+      row[5] + "\n\n" +
+      "Could you check it? If it opens your group, you don't need to do anything.\n" +
+      "If the link has changed, just reply to this email with the new one and we'll update it.\n\n" +
+      "Thanks!\nParent-led Ocean Charter Communities\nhttps://parent-led-ocs.github.io");
+    return true;
+  } catch (err) {
+    return false;
   }
 }
 
