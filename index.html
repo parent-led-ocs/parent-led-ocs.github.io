@@ -384,15 +384,28 @@
   </dialog>
 
   <dialog id="reportbox" class="joinbox">
-    <h3>Is this link broken?</h3>
-    <div class="jb-body">
-      <p>Please try the link first. If it opens <strong id="rb-name"></strong>, it's working and there's nothing to report.</p>
-      <p>If it really is broken, we'll let the person who started the group know.</p>
+    <div id="rb-ask">
+      <h3>Is this link broken?</h3>
+      <div class="jb-body">
+        <p>Please try the link first. If it opens <strong id="rb-name"></strong>, it's working and there's nothing to report.</p>
+        <p>If it really is broken, we'll let the group's admin know.</p>
+        <p id="rb-err" class="err"></p>
+      </div>
+      <div class="jb-actions">
+        <button type="button" id="rb-cancel" class="jb-cancel">Cancel</button>
+        <a id="rb-try" class="btn gold" target="_blank" rel="noopener noreferrer">Try the link &#8599;</a>
+        <button type="button" id="rb-confirm" class="btn">Yes, it's broken</button>
+      </div>
     </div>
-    <div class="jb-actions">
-      <button type="button" id="rb-cancel" class="jb-cancel">Cancel</button>
-      <a id="rb-try" class="btn gold" target="_blank" rel="noopener noreferrer">Try the link &#8599;</a>
-      <button type="button" id="rb-confirm" class="btn">Yes, it's broken</button>
+    <div id="rb-done" hidden>
+      <h3>Report sent</h3>
+      <div class="jb-body">
+        <p>Thanks! We've let the admin of <strong id="rb-done-name"></strong> know the link may be broken.</p>
+        <p>Please check back in a day or two.</p>
+      </div>
+      <div class="jb-actions">
+        <button type="button" id="rb-ok" class="btn">OK</button>
+      </div>
     </div>
   </dialog>
 
@@ -558,6 +571,11 @@ function openJoinBox(g) {
 let reporting = null;
 function openReportBox(g, linkEl) {
   reporting = { g, linkEl };
+  $("#rb-ask").hidden = false;
+  $("#rb-done").hidden = true;
+  $("#rb-err").style.display = "none";
+  $("#rb-confirm").disabled = false;
+  $("#rb-confirm").textContent = "Yes, it's broken";
   $("#rb-name").textContent = g.name;
   const tryLink = $("#rb-try");
   if (/^https:\/\//.test(g.link)) tryLink.href = g.link; else tryLink.removeAttribute("href");
@@ -721,12 +739,30 @@ $("#joinbox").addEventListener("click", e => { if (e.target.id === "joinbox") e.
 
 $("#rb-cancel").addEventListener("click", () => $("#reportbox").close());
 $("#reportbox").addEventListener("click", e => { if (e.target.id === "reportbox") e.target.close(); });
-$("#rb-confirm").addEventListener("click", () => {
+$("#rb-ok").addEventListener("click", () => $("#reportbox").close());
+$("#rb-confirm").addEventListener("click", async () => {
   const { g, linkEl } = reporting;
-  $("#reportbox").close();
-  const note = Object.assign(document.createElement("span"), { className: "flash", textContent: "Thanks. We'll check this link and let the group's starter know." });
+  const btn = $("#rb-confirm");
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+  let result;
+  try {
+    result = await post({ action: "report", id: g.id, reason: "Broken link" });
+  } catch (err) {
+    result = { ok: false };
+  }
+  if (!result.ok) {
+    $("#rb-err").textContent = "Sorry, the report didn't go through. Please try again in a minute.";
+    $("#rb-err").style.display = "block";
+    btn.disabled = false;
+    btn.textContent = "Yes, it's broken";
+    return;
+  }
+  $("#rb-done-name").textContent = g.name;
+  $("#rb-ask").hidden = true;
+  $("#rb-done").hidden = false;
+  const note = Object.assign(document.createElement("span"), { className: "flash", textContent: "Reported. Check back in a day or two." });
   linkEl.replaceWith(note);
-  post({ action: "report", id: g.id, reason: "Broken link" }).catch(() => {});
 });
 
 $("#q").addEventListener("input", renderList);
