@@ -157,6 +157,12 @@
   .joinbox .jb-body { padding: 14px 16px 4px; }
   .joinbox .jb-body p { margin: 0 0 10px; }
   .joinbox .jb-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: flex-end; padding: 6px 16px 16px; }
+  .tipsbox { max-width: 520px; max-height: 88vh; overflow: hidden; }
+  .tipsbox[open] { display: flex; flex-direction: column; }
+  .tipsbox .jb-body { overflow-y: auto; }
+  .tipsbox ol { margin: 0 0 8px; padding-left: 20px; }
+  .tipsbox li { margin-bottom: 10px; }
+  .tipsbox li strong { color: var(--blue); }
   .joinbox .jb-cancel { background: none; border: 0; padding: 0; font: inherit; color: var(--blue); text-decoration: underline; cursor: pointer; }
 
   .empty { padding: 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); }
@@ -406,6 +412,23 @@
       <div class="jb-actions">
         <button type="button" id="rb-ok" class="btn">OK</button>
       </div>
+    </div>
+  </dialog>
+
+  <dialog id="tipsbox" class="joinbox tipsbox">
+    <h3>&#127881; Your group is live!</h3>
+    <div class="jb-body">
+      <p>Here are some tips to keep your group engaged:</p>
+      <ol>
+        <li><strong>Poll first.</strong> Ask members what they want from the group (networking, resources, events, job leads). Share the results with the group and plan around them. Run a new poll every few months.</li>
+        <li><strong>Post weekly on a set day.</strong> Keep the same day and the same format every week, like &ldquo;Monday Check-In&rdquo; or &ldquo;Friday Wins.&rdquo; Take turns writing it among admins.</li>
+        <li><strong>Host a monthly event.</strong> Switch between virtual and in person. Give each event one owner, announce it 3 weeks out, and send reminders the week before and on the day. Post photos or takeaways afterward.</li>
+        <li><strong>Ask questions and reply fast.</strong> End posts with a question people can answer in one line. Respond by name within a few hours, and tag quieter members to bring them in.</li>
+        <li><strong>Keep it clean.</strong> Post less and make it count. No chains or excess forwards, and move long side conversations to DMs.</li>
+      </ol>
+    </div>
+    <div class="jb-actions">
+      <button type="button" id="tips-ok" class="btn">Got it</button>
     </div>
   </dialog>
 
@@ -731,6 +754,7 @@ $("#form").addEventListener("submit", async e => {
   okBox.className = "ok";
   okBox.innerHTML = "<strong>Your group is live.</strong> It's at the top of the list. Thanks for building community!";
   $("#list").prepend(okBox);
+  $("#tipsbox").showModal();
 });
 
 $("#jb-cancel").addEventListener("click", () => $("#joinbox").close());
@@ -739,6 +763,7 @@ $("#joinbox").addEventListener("click", e => { if (e.target.id === "joinbox") e.
 
 $("#rb-cancel").addEventListener("click", () => $("#reportbox").close());
 $("#reportbox").addEventListener("click", e => { if (e.target.id === "reportbox") e.target.close(); });
+$("#tips-ok").addEventListener("click", () => $("#tipsbox").close());
 $("#rb-ok").addEventListener("click", () => $("#reportbox").close());
 $("#rb-confirm").addEventListener("click", async () => {
   const { g, linkEl } = reporting;
